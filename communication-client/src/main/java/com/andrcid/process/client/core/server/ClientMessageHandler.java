@@ -10,6 +10,8 @@ import com.tigerjoys.communication.protocol.message.StatusMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.CorruptedFrameException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * client message handler
@@ -18,7 +20,7 @@ import io.netty.handler.codec.CorruptedFrameException;
  */
 public class ClientMessageHandler extends SimpleChannelInboundHandler<Protocol> {
 	
-//	private static final Logger LOGGER = LoggerFactory.getLogger(ClientMessageHandler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClientMessageHandler.class);
 	
 	private IMessageProcessor messageProcessor;
 	
@@ -45,8 +47,8 @@ public class ClientMessageHandler extends SimpleChannelInboundHandler<Protocol> 
 				messageProcessor.processReceiveStatusMessage(ctx, (StatusMessage)p.getEntity());
 				break;
 			default:
-//				LOGGER.warn("have not match messageType");
-				Log.d("netty msg:", "have not match messageType");
+				LOGGER.warn("have not match messageType");
+//				Log.d("netty msg:", "have not match messageType");
 				break;
 		}
     }
@@ -55,11 +57,11 @@ public class ClientMessageHandler extends SimpleChannelInboundHandler<Protocol> 
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		if (cause instanceof CorruptedFrameException) {
 			// something goes bad with decoding
-//			LOGGER.warn("Error decoding a packet, probably a bad formatted packet, message: " + cause.getMessage());
-			Log.d("netty msg:", "Error decoding a packet, probably a bad formatted packet, message: " + cause.getMessage());
+			LOGGER.warn("Error decoding a packet, probably a bad formatted packet, message: " + cause.getMessage());
+//			Log.d("netty msg:", "Error decoding a packet, probably a bad formatted packet, message: " + cause.getMessage());
 		} else {
-//			LOGGER.error("Ugly error on networking", cause);
-			Log.d("netty msg:", "Ugly error on networking"+cause+"");
+			LOGGER.error("Ugly error on networking", cause);
+//			Log.d("netty msg:", "Ugly error on networking"+cause+"");
 
 		}
 	}

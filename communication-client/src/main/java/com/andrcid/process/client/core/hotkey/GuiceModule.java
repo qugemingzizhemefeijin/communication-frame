@@ -9,10 +9,12 @@ import com.andrcid.process.client.core.utils.files.ClassScannerFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Key;
 import com.google.inject.Scopes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GuiceModule extends AbstractModule {
 	
-//	private static final Logger LOGGER = LoggerFactory.getLogger(GuiceModule.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GuiceModule.class);
 
 	@Override
 	protected void configure() {
@@ -25,8 +27,8 @@ public class GuiceModule extends AbstractModule {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void scannerClass() {
 		String scannerPackage = Global.getInstance().getClientConfig().getBasePackages();
-//		LOGGER.info("scannerPackage -> " + scannerPackage);
-		Log.d("netty msg:", "scannerPackage -> " + scannerPackage);
+		LOGGER.info("scannerPackage -> " + scannerPackage);
+//		Log.d("netty msg:", "scannerPackage -> " + scannerPackage);
 		Collection<Class<?>> types = ClassScannerFactory.getInstance().classScanner(scannerPackage).getTypesAnnotatedWith(ProxyModule.class);
 		
 		if(types != null && !types.isEmpty()) {

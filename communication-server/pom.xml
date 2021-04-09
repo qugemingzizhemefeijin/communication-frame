@@ -4,7 +4,7 @@
 
 	<parent>
 		<groupId>com.tigerjoys.onion.netty.communication</groupId>
-		<artifactId>asServerIo</artifactId>
+		<artifactId>communication-frame</artifactId>
 		<version>0.0.3-SNAPSHOT</version>
 	</parent>
 
@@ -82,7 +82,6 @@
 				<artifactId>maven-source-plugin</artifactId>
 				<configuration>
 					<attach>true</attach>
-					<encoding>UTF-8</encoding>
 				</configuration>
 				<executions>
 					<execution>

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.util.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 所有的远程方法代理集合
@@ -13,7 +15,7 @@ import android.util.Log;
  */
 public final class MethodHolder {
 	
-//	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHolder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHolder.class);
 	
 	/**
 	 * 所有的代理方法映射集合
@@ -30,13 +32,13 @@ public final class MethodHolder {
 	 * @param proxyClass - 代理接口类
 	 */
 	public static synchronized void analyzeClass(Class<?> proxyClass) {
-//		LOGGER.info("analyzeClass methods by proxyClass : " + proxyClass.getName());
-		Log.d("netty msg:", "analyzeClass methods by proxyClass : "+proxyClass.getName()+"");
+		LOGGER.info("analyzeClass methods by proxyClass : " + proxyClass.getName());
+//		Log.d("netty msg:", "analyzeClass methods by proxyClass : "+proxyClass.getName()+"");
 
 		Method[] methods = proxyClass.getMethods();
 		if(methods == null || methods.length == 0) {
-//			LOGGER.warn("proxyClass : " + proxyClass.getName() + " has not method!");
-			Log.d("netty msg:", "proxyClass : " + proxyClass.getName() + " has not method!");
+			LOGGER.warn("proxyClass : " + proxyClass.getName() + " has not method!");
+//			Log.d("netty msg:", "proxyClass : " + proxyClass.getName() + " has not method!");
 			return;
 		}
 		
@@ -44,8 +46,8 @@ public final class MethodHolder {
 		for(Method m : methods) {
 			RequestMapping mapping = m.getAnnotation(RequestMapping.class);
 			if(mapping != null) {
-//				LOGGER.info("proxyClass : " + proxyClass.getName() + ",method : " + m.getName() + ",mapping : " + mapping.value());
-				Log.d("netty msg:", "proxyClass : " + proxyClass.getName() + ",method : " + m.getName() + ",mapping : " + mapping.value());
+				LOGGER.info("proxyClass : " + proxyClass.getName() + ",method : " + m.getName() + ",mapping : " + mapping.value());
+//				Log.d("netty msg:", "proxyClass : " + proxyClass.getName() + ",method : " + m.getName() + ",mapping : " + mapping.value());
 				methodsMap.put(m.getName(), new MethodInfo(m , mapping.value() , mapping.method() == RequestMethod.SYNC));
 			}
 		}

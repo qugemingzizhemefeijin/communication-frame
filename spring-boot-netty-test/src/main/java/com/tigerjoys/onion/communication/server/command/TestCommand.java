@@ -1,6 +1,7 @@
 package com.tigerjoys.onion.communication.server.command;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,8 @@ import com.tigerjoys.onion.communication.server.vo.TestVO;
 public class TestCommand {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestCommand.class);
+
+	private final AtomicInteger increment = new AtomicInteger();
 	
 	@Autowired
 	private ITestService testService;
@@ -37,6 +40,11 @@ public class TestCommand {
 		}
 		
 		return testService.test(request, abc);
+	}
+
+	@CommandMapping("/api/getTask")
+	public String getTask(String json) {
+		return increment.incrementAndGet()+":"+json;
 	}
 	
 }

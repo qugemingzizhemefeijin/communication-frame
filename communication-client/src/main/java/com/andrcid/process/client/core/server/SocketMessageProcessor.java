@@ -14,6 +14,8 @@ import com.tigerjoys.communication.protocol.message.StatusMessage;
 import com.tigerjoys.communication.protocol.utility.FastJsonHelper;
 
 import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 消息处理中心
@@ -22,12 +24,12 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public class SocketMessageProcessor implements IMessageProcessor {
 	
-//	private static final Logger LOGGER = LoggerFactory.getLogger(SocketMessageProcessor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SocketMessageProcessor.class);
 
 	@Override
 	public void processReceiveRequestMessage(ChannelHandlerContext ctx, Protocol p) {
-//		LOGGER.info("Send Client to Server RequestMessage : " + FastJsonHelper.toJson(p.getEntity()));
-		Log.d("netty msg:", "Send Client to Server RequestMessage : " + FastJsonHelper.toJson(p.getEntity()));
+		LOGGER.info("Send Client to Server RequestMessage : " + FastJsonHelper.toJson(p.getEntity()));
+//		Log.d("netty msg:", "Send Client to Server RequestMessage : " + FastJsonHelper.toJson(p.getEntity()));
 	}
 
 	@Override
@@ -35,8 +37,8 @@ public class SocketMessageProcessor implements IMessageProcessor {
 		//解锁线程
 		WindowData wd = MessageWaitProcessor.getWindowData(p.getMessageId());
 		if(wd != null) {
-//			LOGGER.info("Receive from Server ResponseMessage : " + FastJsonHelper.toJson(p.getEntity()));
-			Log.d("netty msg:", "Receive from Server ResponseMessage : " + FastJsonHelper.toJson(p.getEntity()));
+			LOGGER.info("Receive from Server ResponseMessage : " + FastJsonHelper.toJson(p.getEntity()));
+//			Log.d("netty msg:", "Receive from Server ResponseMessage : " + FastJsonHelper.toJson(p.getEntity()));
 			if(wd.isAsync()) {
 				wd.setProtocol(p);
 				//执行异步回调逻辑
@@ -46,8 +48,8 @@ public class SocketMessageProcessor implements IMessageProcessor {
 				wd.getEvent().set();
 			}
 		} else {
-//			LOGGER.warn("Receive from Server ResponseMessage not in WAIT_WINDOWS : " + FastJsonHelper.toJson(p.getEntity()));
-			Log.d("netty msg:", "Receive from Server ResponseMessage not in WAIT_WINDOWS : " + FastJsonHelper.toJson(p.getEntity()));
+			LOGGER.warn("Receive from Server ResponseMessage not in WAIT_WINDOWS : " + FastJsonHelper.toJson(p.getEntity()));
+//			Log.d("netty msg:", "Receive from Server ResponseMessage not in WAIT_WINDOWS : " + FastJsonHelper.toJson(p.getEntity()));
 		}
 	}
 
@@ -56,8 +58,8 @@ public class SocketMessageProcessor implements IMessageProcessor {
 		//解锁线程
 		WindowData wd = MessageWaitProcessor.getWindowData(p.getMessageId());
 		if(wd != null) {
-//			LOGGER.info("Receive from Server ExceptionMessage : " + FastJsonHelper.toJson(p.getEntity()));
-			Log.d("netty msg:", "Receive from Server ExceptionMessage : " + FastJsonHelper.toJson(p.getEntity()));
+			LOGGER.info("Receive from Server ExceptionMessage : " + FastJsonHelper.toJson(p.getEntity()));
+//			Log.d("netty msg:", "Receive from Server ExceptionMessage : " + FastJsonHelper.toJson(p.getEntity()));
 			if(wd.isAsync()) {
 				wd.setProtocol(p);
 				//执行异步回调逻辑
@@ -67,8 +69,8 @@ public class SocketMessageProcessor implements IMessageProcessor {
 				wd.getEvent().set();
 			}
 		} else {
-//			LOGGER.info("Receive from Server ExceptionMessage not in WAIT_WINDOWS : " + FastJsonHelper.toJson(p.getEntity()));
-			Log.d("netty msg:", "Receive from Server ExceptionMessage not in WAIT_WINDOWS : " + FastJsonHelper.toJson(p.getEntity()));
+			LOGGER.info("Receive from Server ExceptionMessage not in WAIT_WINDOWS : " + FastJsonHelper.toJson(p.getEntity()));
+//			Log.d("netty msg:", "Receive from Server ExceptionMessage not in WAIT_WINDOWS : " + FastJsonHelper.toJson(p.getEntity()));
 		}
 	}
 	
@@ -77,15 +79,15 @@ public class SocketMessageProcessor implements IMessageProcessor {
 		ISession session = SessionFactory.getSession();
 		
 		if (session == null || session.isClosed()) {
-//			LOGGER.warn("status message's session is null or closed!");
-			Log.d("netty msg:", "status message's session is null or closed!");
+			LOGGER.warn("status message's session is null or closed!");
+//			Log.d("netty msg:", "status message's session is null or closed!");
 			return;
 		}
 		
 		DeviceStatus status = DeviceStatus.getDeviceState(message.getStatus());
 		
-//		LOGGER.info("from server message - deviceId: " +message.getDeviceId()+ ",current status "+ session.getDeviceStatus().name() +",change status : " + status.name());
-		Log.d("netty msg:", "from server message - deviceId: " +message.getDeviceId()+ ",current status "+ session.getDeviceStatus().name() +",change status : " + status.name());
+		LOGGER.info("from server message - deviceId: " +message.getDeviceId()+ ",current status "+ session.getDeviceStatus().name() +",change status : " + status.name());
+//		Log.d("netty msg:", "from server message - deviceId: " +message.getDeviceId()+ ",current status "+ session.getDeviceStatus().name() +",change status : " + status.name());
 
 		//修改设备状态
 		session.setDeviceStatus(status);

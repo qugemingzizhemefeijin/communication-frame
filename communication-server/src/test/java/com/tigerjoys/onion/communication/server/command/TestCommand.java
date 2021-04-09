@@ -2,6 +2,7 @@ package com.tigerjoys.onion.communication.server.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,8 @@ import com.tigerjoys.onion.communication.server.vo.TestVO;
 public class TestCommand {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestCommand.class);
+
+	private final AtomicInteger increment = new AtomicInteger();
 	
 	@CommandMapping("/api/test/{abc}")
 	public List<String> test(RequestMessage request , int abc , JSONObject json , TestVO vo){
@@ -34,6 +37,11 @@ public class TestCommand {
 		list.add("5");
 		
 		return list;
+	}
+
+	@CommandMapping("/api/getTask")
+	public String getTask(JSONObject json) {
+		return increment.incrementAndGet()+":"+json.toJSONString();
 	}
 	
 }

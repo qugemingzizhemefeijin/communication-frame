@@ -107,7 +107,7 @@ public class AsyncMessageInvoker implements IInvokerHandler {
 	 * @throws ServiceFrameException 
 	 */
 	private void doInvoker(BeatContext context , IProxyStub proxy) throws ServiceFrameException {
-		LOGGER.debug("deviceId : " + context.getDeviceId()+",mapping : " + context.getMapping());
+		LOGGER.debug("deviceId : " + context.getDeviceId()+",mapping : " + context.getMapping()+ ", body : " + context.getRequest().getBody());
 		//记录消息处理时间
 		long beginTime = System.currentTimeMillis();
 		context.setInvokeBeginTime(beginTime);

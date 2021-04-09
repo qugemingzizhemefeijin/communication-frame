@@ -22,11 +22,13 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.concurrent.ScheduledFuture;
 import android.util.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ChannelHandler.Sharable
 public class ConnectionWatchdog extends ChannelInboundHandlerAdapter {
 
-//	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionWatchdog.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionWatchdog.class);
 
 	private SocketServer server;
 
@@ -61,8 +63,8 @@ public class ConnectionWatchdog extends ChannelInboundHandlerAdapter {
 					try {
 						server.reconnection();
 					} catch (InterruptedException e) {
-//						LOGGER.error(e.getMessage() , e);
-						Log.d("netty msg:", "error"+e.getMessage());
+						LOGGER.error(e.getMessage() , e);
+//						Log.d("netty msg:", "error"+e.getMessage());
 
 					}
 //					LOGGER.info("Heartbeat Failure , close channel and reconnection ---------");
@@ -71,8 +73,8 @@ public class ConnectionWatchdog extends ChannelInboundHandlerAdapter {
 			}
 		}, 5L, 5L, TimeUnit.SECONDS);
 		
-//		LOGGER.info("Connects with {}.", ctx.channel());
-		Log.d("netty msg:", "Connects with {"+ ctx.channel()+"}.");
+		LOGGER.info("Connects with {}.", ctx.channel());
+//		Log.d("netty msg:", "Connects with {"+ ctx.channel()+"}.");
 		ctx.fireChannelActive();
 	}
 
@@ -81,8 +83,8 @@ public class ConnectionWatchdog extends ChannelInboundHandlerAdapter {
 	 */
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-//		LOGGER.warn("Disconnects with {}", ctx.channel());
-		Log.d("netty msg:", "Disconnects with  "+ ctx.channel()+".");
+		LOGGER.warn("Disconnects with {}", ctx.channel());
+//		Log.d("netty msg:", "Disconnects with  "+ ctx.channel()+".");
 		//如果当前Session没有关闭，则调用关闭功能
 		ISession session = SessionFactory.getSession();
 		if(session != null && !session.isClosed()) {
@@ -93,8 +95,8 @@ public class ConnectionWatchdog extends ChannelInboundHandlerAdapter {
 			try {
 				scheduledFuture.cancel(false);
 			} catch (Exception e) {
-//				LOGGER.error(e.getMessage() , e);
-				Log.d("netty msg:", "error"+e.getMessage());
+				LOGGER.error(e.getMessage() , e);
+//				Log.d("netty msg:", "error"+e.getMessage());
 			}
 		}
 		
@@ -120,8 +122,8 @@ public class ConnectionWatchdog extends ChannelInboundHandlerAdapter {
 					
 					HeartBeatMessage m = (HeartBeatMessage)message;
 					if(m.getFstConn() == 1) {//如果是第一次心跳连接，则需要执行业务层的监听器
-//						LOGGER.info("current session first connection server!");
-						Log.d("netty msg:", "current session first connection server!");
+						LOGGER.info("current session first connection server!");
+//						Log.d("netty msg:", "current session first connection server!");
 
 						List<ISessionConnectionListener> connectionListenerList = CommunicationListener.getSessionConnectionListener();
 						if(connectionListenerList != null && !connectionListenerList.isEmpty()) {
@@ -142,15 +144,15 @@ public class ConnectionWatchdog extends ChannelInboundHandlerAdapter {
 						}
 					}
 					
-//					LOGGER.info("receive heartBeat response from server {},time is {} , wait is {}",FastJsonHelper.toJson(message),refreshTime , MessageWaitProcessor.getWindowDataSize());
-					Log.d("netty msg:", "receive heartBeat response from server "+FastJsonHelper.toJson(message)+",time is "+refreshTime+" , wait is "+MessageWaitProcessor.getWindowDataSize()+"");
+					LOGGER.info("receive heartBeat response from server {},time is {} , wait is {}",FastJsonHelper.toJson(message),refreshTime , MessageWaitProcessor.getWindowDataSize());
+//					Log.d("netty msg:", "receive heartBeat response from server "+FastJsonHelper.toJson(message)+",time is "+refreshTime+" , wait is "+MessageWaitProcessor.getWindowDataSize()+"");
 					return;
 				}
 				
 				ctx.fireChannelRead(p);
 			} else {
-//				LOGGER.warn("receive server message unknown type : " + msg.getClass().getName());
-				Log.d("netty msg:", "receive server message unknown type :"+msg.getClass().getName()+"");
+				LOGGER.warn("receive server message unknown type : " + msg.getClass().getName());
+//				Log.d("netty msg:", "receive server message unknown type :"+msg.getClass().getName()+"");
 
 			}
 		}

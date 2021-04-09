@@ -23,10 +23,12 @@ import com.tigerjoys.communication.protocol.enums.MessageFromType;
 import com.tigerjoys.communication.protocol.message.IMessage;
 import com.tigerjoys.communication.protocol.message.RequestMessage;
 import com.tigerjoys.communication.protocol.utility.FastJsonHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CommunicationInvocationHandler implements InvocationHandler {
 	
-//	private static final Logger LOGGER = LoggerFactory.getLogger(CommunicationInvocationHandler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CommunicationInvocationHandler.class);
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -69,24 +71,24 @@ public class CommunicationInvocationHandler implements InvocationHandler {
 			}
 		}
 		
-//		if(LOGGER.isDebugEnabled()) {
-//			LOGGER.debug("invoke remote method : " + method);
-			Log.d("netty msg:", "invoke remote method : " + method);
-//			LOGGER.debug("handlers size : " + (callBacks != null ? callBacks.length : 0));
-			Log.d("netty msg:", "handlers size : " + (callBacks != null ? callBacks.length : 0));
+		if(LOGGER.isDebugEnabled()) {
+			LOGGER.debug("invoke remote method : " + method);
+//			Log.d("netty msg:", "invoke remote method : " + method);
+			LOGGER.debug("handlers size : " + (callBacks != null ? callBacks.length : 0));
+//			Log.d("netty msg:", "handlers size : " + (callBacks != null ? callBacks.length : 0));
 			if(args != null && args.length > 0) {
 				String[] paramNames = methodInfo.getParamNames();
 				if(paramNames.length == 0) {
-//					LOGGER.debug("invoke remote args " + args[0]);
-					Log.d("netty msg:", "invoke remote args " + args[0]);
+					LOGGER.debug("invoke remote args " + args[0]);
+//					Log.d("netty msg:", "invoke remote args " + args[0]);
 				} else {
 					for(int i=0;i<args.length;i++) {
-//						LOGGER.debug("invoke remote args " +paramNames[i]+ " : " + args[i]);
-						Log.d("netty msg:", "invoke remote args " +paramNames[i]+ " : " + args[i]);
+						LOGGER.debug("invoke remote args " +paramNames[i]+ " : " + args[i]);
+//						Log.d("netty msg:", "invoke remote args " +paramNames[i]+ " : " + args[i]);
 					}
 				}
 			}
-//		}
+		}
 		
 		if(!methodInfo.isSync()) {//异步调用
 			if(methodInfo.isFuture()) {
@@ -125,8 +127,8 @@ public class CommunicationInvocationHandler implements InvocationHandler {
 					throw new NullPointerException("invoke remote command return message is null!");
 				}
 				
-//				LOGGER.debug("invoke " + methodInfo.getMapping()+ " time:" + (System.currentTimeMillis() - beginTime) + "ms");
-				Log.d("netty msg:", "invoke " + methodInfo.getMapping()+ " time:" + (System.currentTimeMillis() - beginTime) + "ms");
+				LOGGER.debug("invoke " + methodInfo.getMapping()+ " time:" + (System.currentTimeMillis() - beginTime) + "ms");
+//				Log.d("netty msg:", "invoke " + methodInfo.getMapping()+ " time:" + (System.currentTimeMillis() - beginTime) + "ms");
 				//处理返回消息，创建返回值对象
 				return ReturnHandler.handle(methodInfo, message);
 			} catch (Exception e) {

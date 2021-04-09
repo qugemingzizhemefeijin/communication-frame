@@ -8,6 +8,8 @@ import com.andrcid.process.client.core.hotkey.GuiceModule;
 import com.andrcid.process.client.core.server.SocketServer;
 import com.andrcid.process.client.core.session.ISessionConnectionListener;
 import com.google.inject.Guice;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 客户端启动类
@@ -16,7 +18,7 @@ import com.google.inject.Guice;
  */
 public final class ClientBootstrap {
 	
-//	private static final Logger LOGGER = LoggerFactory.getLogger(ClientBootstrap.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClientBootstrap.class);
 	
 	public ClientBootstrap(SocketClientConfig clientConfig) {
 		//检查配置信息
@@ -38,16 +40,16 @@ public final class ClientBootstrap {
 	 * @throws InterruptedException 
 	 */
 	public void start() throws InterruptedException {
-//		LOGGER.info("----------------------start client netty server------------------");
-		Log.d("netty msg:", "----------------------start client netty server------------------");
+		LOGGER.info("----------------------start client netty server------------------");
+//		Log.d("netty msg:", "----------------------start client netty server------------------");
 		//加载guice注入服务
 		loadGuice();
 		
 		//加载服务
 		loadServer();
 		
-//		LOGGER.info("----------------------start client netty server finish------------");
-		Log.d("netty msg:", "----------------------start client netty server finish------------");
+		LOGGER.info("----------------------start client netty server finish------------");
+//		Log.d("netty msg:", "----------------------start client netty server finish------------");
 	}
 	
 	/**

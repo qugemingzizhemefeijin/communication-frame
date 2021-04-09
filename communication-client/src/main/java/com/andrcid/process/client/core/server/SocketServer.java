@@ -26,10 +26,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class SocketServer {
 	
-//	private static final Logger LOGGER = LoggerFactory.getLogger(SocketServer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SocketServer.class);
 	
 	private EventLoopGroup eventLoopGroup;
 	
@@ -45,11 +47,11 @@ public final class SocketServer {
 	}
 	
 	public void start() throws InterruptedException {
-//		LOGGER.info("----------------start socket server--------------------");
-		Log.d("netty msg:", "----------------start socket server--------------------");
+		LOGGER.info("----------------start socket server--------------------");
+//		Log.d("netty msg:", "----------------start socket server--------------------");
 		initServer();
-//		LOGGER.info("----------------socket server start finish-------------");
-		Log.d("netty msg:", "----------------socket server start finish-------------");
+		LOGGER.info("----------------socket server start finish-------------");
+//		Log.d("netty msg:", "----------------socket server start finish-------------");
 	}
 	
 	private void initServer() throws InterruptedException {
@@ -83,12 +85,12 @@ public final class SocketServer {
 
 			@Override
 			public void operationComplete(ChannelFuture future) throws Exception {
-//				LOGGER.info("connection server status : " + future.isDone()+",success:" + future.isSuccess());
-				Log.d("netty msg:", "connection server status : " + future.isDone()+",success:" + future.isSuccess());
+				LOGGER.info("connection server status : " + future.isDone()+",success:" + future.isSuccess());
+//				Log.d("netty msg:", "connection server status : " + future.isDone()+",success:" + future.isSuccess());
 				reConnection = false;
 				if (future.isDone() && future.isSuccess()) {
-//					LOGGER.info("---- connection success-------");
-					Log.d("netty msg:", "---- connection success-------");
+					LOGGER.info("---- connection success-------");
+//					Log.d("netty msg:", "---- connection success-------");
 					//服务器连接成功，立马发送一条心跳消息
 					future.channel().writeAndFlush(ProtocolHelper.createHeartBeatMessage(MessageFromType.CLIENT , config.getDeviceId() , true));
 				} else {
@@ -101,11 +103,11 @@ public final class SocketServer {
 					try {
 						f.channel().close();
 					} catch (Exception e) {
-//						LOGGER.info("=================");
-						Log.d("netty msg:", "================="+e);
+						LOGGER.info("=================");
+//						Log.d("netty msg:", "================="+e);
 					}
-//					LOGGER.info("---- connection fail," + config.getReconnectTime() + " second later reconnection ---------host="+config.getServerHost()+",port=" + config.getServerPort());
-					Log.d("netty msg:", "---- connection fail," + config.getReconnectTime() + " second later reconnection ---------host="+config.getServerHost()+",port=" + config.getServerPort());
+					LOGGER.info("---- connection fail," + config.getReconnectTime() + " second later reconnection ---------host="+config.getServerHost()+",port=" + config.getServerPort());
+//					Log.d("netty msg:", "---- connection fail," + config.getReconnectTime() + " second later reconnection ---------host="+config.getServerHost()+",port=" + config.getServerPort());
 					reconnection();
 				}
 			}
@@ -129,8 +131,8 @@ public final class SocketServer {
             	try {
             		initServer();
 				} catch (InterruptedException e) {
-//					LOGGER.error(e.getMessage() , e);
-					Log.d("netty msg:", "error"+e.getMessage());
+					LOGGER.error(e.getMessage() , e);
+//					Log.d("netty msg:", "error"+e.getMessage());
 				}
             }
 
